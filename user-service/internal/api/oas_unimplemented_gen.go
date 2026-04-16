@@ -21,3 +21,12 @@ var _ Handler = UnimplementedHandler{}
 func (UnimplementedHandler) CreateUser(ctx context.Context, req *CreateUserRequest) (r *CreateUserResponse, _ error) {
 	return r, ht.ErrNotImplemented
 }
+
+// Ping implements ping operation.
+//
+// Ping endpoint.
+//
+// GET /users/ping
+func (UnimplementedHandler) Ping(ctx context.Context) (r *PingResponse, _ error) {
+	return r, ht.ErrNotImplemented
+}

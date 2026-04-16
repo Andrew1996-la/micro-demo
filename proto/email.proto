@@ -6,6 +6,7 @@ option go_package = "micro-demo/proto/email;emailpb";
 
 service EmailService {
     rpc SendEmail(SendEmailRequest) returns (SendEmailResponse);
+    rpc CheckEmail(CheckEmailRequest) returns (CheckEmailResponse);
 }
 
 message SendEmailRequest {
@@ -15,4 +16,12 @@ message SendEmailRequest {
 
 message SendEmailResponse {
     bool success = 1;
+}
+
+message CheckEmailRequest {
+    string email = 1;
+}
+
+message CheckEmailResponse {
+    bool exist = 1;
 }

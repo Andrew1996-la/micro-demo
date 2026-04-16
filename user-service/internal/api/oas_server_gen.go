@@ -14,6 +14,12 @@ type Handler interface {
 	//
 	// POST /users
 	CreateUser(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error)
+	// Ping implements ping operation.
+	//
+	// Ping endpoint.
+	//
+	// GET /users/ping
+	Ping(ctx context.Context) (*PingResponse, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

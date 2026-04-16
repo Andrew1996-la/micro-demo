@@ -7,4 +7,5 @@ type OperationName = string
 
 const (
 	CreateUserOperation OperationName = "CreateUser"
+	PingOperation       OperationName = "Ping"
 )

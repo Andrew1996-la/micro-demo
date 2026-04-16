@@ -31,3 +31,18 @@ func (s *CreateUserResponse) GetSuccess() bool {
 func (s *CreateUserResponse) SetSuccess(val bool) {
 	s.Success = val
 }
+
+// Ref: #/components/schemas/PingResponse
+type PingResponse struct {
+	Messages string `json:"messages"`
+}
+
+// GetMessages returns the value of Messages.
+func (s *PingResponse) GetMessages() string {
+	return s.Messages
+}
+
+// SetMessages sets the value of Messages.
+func (s *PingResponse) SetMessages(val string) {
+	s.Messages = val
+}

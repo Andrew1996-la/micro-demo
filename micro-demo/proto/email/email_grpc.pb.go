@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EmailService_SendEmail_FullMethodName = "/email.EmailService/SendEmail"
+	EmailService_SendEmail_FullMethodName  = "/email.EmailService/SendEmail"
+	EmailService_CheckEmail_FullMethodName = "/email.EmailService/CheckEmail"
 )
 
 // EmailServiceClient is the client API for EmailService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
 	SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
+	CheckEmail(ctx context.Context, in *CheckEmailRequest, opts ...grpc.CallOption) (*CheckEmailResponse, error)
 }
 
 type emailServiceClient struct {
@@ -47,11 +49,22 @@ func (c *emailServiceClient) SendEmail(ctx context.Context, in *SendEmailRequest
 	return out, nil
 }
 
+func (c *emailServiceClient) CheckEmail(ctx context.Context, in *CheckEmailRequest, opts ...grpc.CallOption) (*CheckEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CheckEmailResponse)
+	err := c.cc.Invoke(ctx, EmailService_CheckEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmailServiceServer is the server API for EmailService service.
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility.
 type EmailServiceServer interface {
 	SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error)
+	CheckEmail(context.Context, *CheckEmailRequest) (*CheckEmailResponse, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedEmailServiceServer struct{}
 
 func (UnimplementedEmailServiceServer) SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendEmail not implemented")
+}
+func (UnimplementedEmailServiceServer) CheckEmail(context.Context, *CheckEmailRequest) (*CheckEmailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CheckEmail not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}
 func (UnimplementedEmailServiceServer) testEmbeddedByValue()                      {}
@@ -104,6 +120,24 @@ func _EmailService_SendEmail_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmailService_CheckEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmailServiceServer).CheckEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmailService_CheckEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmailServiceServer).CheckEmail(ctx, req.(*CheckEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmailService_ServiceDesc is the grpc.ServiceDesc for EmailService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendEmail",
 			Handler:    _EmailService_SendEmail_Handler,
+		},
+		{
+			MethodName: "CheckEmail",
+			Handler:    _EmailService_CheckEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
