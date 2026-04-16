@@ -1,0 +1,44 @@
+openapi: 3.0.3
+
+info:
+  title: User Service API
+  version: 1.0.0
+
+paths:
+  /users:
+    post:
+      operationId: createUser
+      summary: Create user
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+
+    CreateUserResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
