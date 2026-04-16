@@ -1,0 +1,18 @@
+syntax="proto3";
+
+package email;
+
+option go_package = "micro-demo/proto/email;emailpb";
+
+service EmailService {
+    rpc SendEmail(SendEmailRequest) returns (SendEmailResponse);
+}
+
+message SendEmailRequest {
+    string to = 1;
+    string message = 2;
+}   
+
+message SendEmailResponse {
+    bool success = 1;
+}
